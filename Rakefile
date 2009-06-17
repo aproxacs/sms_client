@@ -9,12 +9,9 @@ begin
     gem.email = "aproxacs@gmail.com"
     gem.homepage = "http://github.com/aproxacs/sms_client"
     gem.authors = ["aproxacs"]
-    gem.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "bin/send_text",
-      "lib/sms_client.rb", "lib/sms_client/base.rb", "lib/sms_client/client/joyzen_client.rb",
-      "lib/sms_client/client/lgt_client.rb", "lib/sms_client/client/paran_client.rb",
-      "lib/sms_client/client/xpeed_client.rb",
-      "lib/sms_client/client_methods.rb",
-      "lib/sms_client/client_pool.rb"]
+    gem.files.include FileList.new('lib/**/*.rb', "bin/*",
+      "LICENCE", "VERSION", "README.rdoc", "Rakefile")
+
     gem.add_dependency("activesupport", [">= 2.0.2"])
     gem.add_dependency("mechanize", [">= 0.9.0"])
     gem.executables = ["send_text"]

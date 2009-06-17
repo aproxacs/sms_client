@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sms_client}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["aproxacs"]
@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.files = [
     "README.rdoc",
      "Rakefile",
+     "VERSION",
+     "bin/send_text",
      "lib/sms_client.rb",
      "lib/sms_client/base.rb",
      "lib/sms_client/client/joyzen_client.rb",
