@@ -1,0 +1,73 @@
+= sms_client
+* http://github.com/aproxacs/sms_client
+
+== DESCRIPTION:
+You can send free SMS message to anybody by using sms_client.
+sms_client uses sites that gives free SMS in Korea, such as paran, joyzen, xpeed, lg telecom.
+Make sure that you have an account on above sites before using sms_client.
+
+== REQUIREMENTS:
+* ruby 1.8.6
+* mechanize
+* activesupport
+
+== INSTALL:
+
+* sudo gem install aproxacs-sms_client
+
+== SYNOPSIS:
+
+# Sending SMS
+
+  SMS::Client.new("xpeed") do |cli|
+    cli.login("ID", "PASSWORD")
+    cli.from = "01012344567"
+    cli.deliver("0107564321", "Hello~ SMS")
+  end
+
+# Another way to send SMS
+
+  client = SMS::Client.paran
+  client.login("ID", "PASSWORD")
+  client.deliver("0107564321", "Hello~ SMS")
+
+# setting Logger
+
+  SMS.log = Logger.new("chang.log")
+
+# send SMS on command line
+
+  send_text <text> <to> <from> <client> <id> <password>
+
+# using client pool.
+# Client pool is useful because the number of available SMS of one site is exhausted,
+# the next available site is used to send SMS
+
+  config = YAML.load_file("config.yml")
+  pool = SMS::ClientPool.new(config)
+  pool.from = "01024077530"
+  pool.first.deliver("0107564321", "Hello~ SMS") # pool.first chooses the one of lower priority.
+
+# config.yml is like below.
+
+  paran:
+    id: "ID"
+    password: "PASS"
+    priority: 4
+  lgt:
+    id: "ID"
+    password: "PASS"
+    priority: 5
+  xpeed:
+    id: "OD"
+    password: "PASS"
+    priority: 2
+  joyzen:
+    id: "ID"
+    password: "PASS"
+    priority: 1
+
+
+== Copyright
+
+Copyright (c) 2009 aproxacs. See LICENSE for details.

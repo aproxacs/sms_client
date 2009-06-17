@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'rubygems'
+require 'sms_client'
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Send SMS"
+  opts.define_head "Usage: send_text <text> <to> <from> <client> <id> <password>"
+end
+opts.parse!
+
+if ARGV.size < 6
+  puts opts
+  exit 1
+end
+
+text = ARGV.shift
+to = ARGV.shift
+from = ARGV.shift 
+client = ARGV.shift
+id = ARGV.shift
+password = ARGV.shift
+
+puts "Sending SMS to #{to} from #{from} using #{client}"
+puts "  TEXT => #{text}"
+
+SMS::Client.new(client) do |cli|
+  cli.login(id, password)
+  cli.from = from
+  cli.deliver(to, text)
+end
+
