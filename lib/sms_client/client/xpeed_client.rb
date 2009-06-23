@@ -15,9 +15,7 @@ module SMS
       page.form_with(:name => "phone_form") do |form|
         @remains = form.remainFreeStr.split(":").last.to_i
       end
-
-      SMS.log.info "[Xpeed] Remains : #{remains} times" if SMS.log
-      available?
+      super
     rescue Exception => e
       SMS.log.debug e if SMS.log
       false

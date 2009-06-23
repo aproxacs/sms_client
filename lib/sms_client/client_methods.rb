@@ -1,7 +1,5 @@
 module SMS
   module ClientMethods
-    attr_accessor :priority
-    
     def initialize
       @agent = WWW::Mechanize.new do |agent|
         agent.user_agent_alias = 'Windows IE 7'
@@ -24,6 +22,14 @@ module SMS
       end
     end
 
+    def login(id, password)
+      @id = id
+      @password = password
+      SMS.log.info "[Paran] Remains : #{remains} times" if SMS.log
+      available?
+      true
+    end
+
     def deliver(to, msg)
       return false unless available?
       return false unless valid_number?(to)
@@ -36,7 +42,7 @@ module SMS
     end
 
     def to_s
-      "#{self.class} : avaliable=#{available?}, from=#{from}, remains=#{remains}, priority=#{priority}"
+      "#{self.class} : avaliable=#{available?}, from=#{from}, remains=#{remains}"
     end
 
     protected

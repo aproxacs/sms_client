@@ -14,9 +14,7 @@ module SMS
       page = @agent.get("http://www.joyzen.co.kr/community/message/pop_message.html")
       page = @agent.get("http://www.joyzen.co.kr/community/message/pop_message.html")
       @remains = page.search("tr td font strong").first.content.to_i
-
-      SMS.log.info "[Joyzen] Remains : #{remains} times" if SMS.log
-      available?
+      super
     rescue Exception => e
       SMS.log.debug e if SMS.log
       false
@@ -31,8 +29,6 @@ module SMS
         form.phone = from
         form.group_name1 = to
       end.submit
-      
-      true
     end
   end
 end

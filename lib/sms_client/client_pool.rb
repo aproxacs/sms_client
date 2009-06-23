@@ -8,62 +8,43 @@ module SMS
     #  ...
     # }
     #
-    def initialize(config)
-      add(config)
+    def initialize(config = {})
+      @config = config.to_a
+      sort
     end
-
-    def clients
-      @clients ||= []
-    end
+    attr_accessor :from
 
     def size
-      clients.size
+      @config.size
     end
 
     def add(cli)
-      if cli.is_a? SMS::Client
-        clients << cli
-      else cli.is_a? Hash
-        cli.each do |key, val|
-          val.symbolize_keys!
-          client = SMS::Client.new(key) do |c|
-            c.priority = val[:priority] || 10
-            c.login(val[:id], val[:password])
-          end
-          clients << client if client.available?
-        end
-      end
-
+      @config.concat cli.to_a
       sort
     end
 
-    def remove(cli)
-      clients.delete(cli)
+    def remove(key)
+      @config.delete(key)
     end
 
     def first
-      clients.each do |cli|
-        next unless cli.available?
-        return cli
-      end
-    end
-
-    def from=(num)
-      clients.each do |c|
-        c.from = num
+      @config.each do |cf|
+        cli = Client.new(cf[0]) do |cli|
+          cli.from = from if from
+          cli.login(cf[1]["id"], cf[1]["password"])
+        end
+        return cli if cli.available?
       end
     end
 
     def to_s
-      clients.inject(["#{self.class} : "]) do |ret, cli|
-        ret << "  (#{cli.to_s})"
-      end.join("\n")
+      @config.to_s
     end
 
     private
     def sort
-      clients.sort! do |a, b|
-        a.priority <=> b.priority
+      @config.sort! do |a,b|
+        a[1]["priority"] <=> b[1]["priority"]
       end
     end
   end

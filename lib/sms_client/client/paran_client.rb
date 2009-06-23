@@ -2,7 +2,7 @@ module SMS
   class ParanClient
     include ClientMethods
     
-    def login(id, password)
+    def login(id, password)      
       id, domain = id.split("@")
       page = @agent.get("http://www.paran.com")
       page = page.form_with(:name => "fmLogin") do |form|
@@ -16,9 +16,7 @@ module SMS
       if page.search("#smsinfo a").first.content =~ /(\d+).*/
         @remains = $1.to_i
       end
-      
-      SMS.log.info "[Paran] Remains : #{remains} times" if SMS.log
-      available?
+      super
     rescue Exception => e
       SMS.log.debug e if SMS.log
       false

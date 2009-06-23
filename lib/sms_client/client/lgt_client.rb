@@ -19,8 +19,7 @@ module SMS
       page = page.forms.first.submit
       page = @agent.get("http://cworld.ez-i.co.kr/mylgt2007/web2phone.asp")
       @remains = page.search(".mysms2_1 .accent").first.content.to_i
-      SMS.log.info "[LG Telecom] Remains : #{remains} times" if SMS.log
-      available?
+      super
     rescue Exception => e
       SMS.log.debug e if SMS.log
       false
