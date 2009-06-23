@@ -25,9 +25,8 @@ module SMS
     def login(id, password)
       @id = id
       @password = password
-      SMS.log.info "[Paran] Remains : #{remains} times" if SMS.log
+      SMS.log.info "[#{self.class}] Remains : #{remains} times" if SMS.log
       available?
-      true
     end
 
     def deliver(to, msg)
